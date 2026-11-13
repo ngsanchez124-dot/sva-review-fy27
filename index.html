@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SVA Education & Readiness Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky ink masthead with language + section rail; content column max 1180px; data in quiet tables, state as pills */
+:root{
+  --bg:#F5F6F8; --surface:#FFFFFF; --surface2:#EEF1F5; --ink:#101A2B; --fg:#1C2536; --muted:#5D6779; --line:#DCE1E8;
+  --accent:#E8590C; --accent-soft:#FDEBDD; --mast:#0F1B2D; --mast-fg:#F2F4F8; --mast-muted:#9FB0CC;
+  --good:#1F7A45; --good-soft:#E3F3E8; --warn:#A15C00; --warn-soft:#FBEFD9; --bad:#B42318; --bad-soft:#FBE4E1; --info:#2F5DA8; --info-soft:#E3ECF8;
+  --display:"Inter Tight","Inter",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B111C; --surface:#121A28; --surface2:#182235; --ink:#EEF2F8; --fg:#D9E0EB; --muted:#93A0B6; --line:#243149;
+  --accent:#FF7A33; --accent-soft:#3A2414; --mast:#070C15; --mast-fg:#F2F4F8; --mast-muted:#8597B5;
+  --good:#5CC48A; --good-soft:#123222; --warn:#E8B04B; --warn-soft:#352812; --bad:#F2877C; --bad-soft:#3A1916; --info:#86A9E8; --info-soft:#16253F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B111C; --surface:#121A28; --surface2:#182235; --ink:#EEF2F8; --fg:#D9E0EB; --muted:#93A0B6; --line:#243149;
+  --accent:#FF7A33; --accent-soft:#3A2414; --mast:#070C15; --mast-fg:#F2F4F8; --mast-muted:#8597B5;
+  --good:#5CC48A; --good-soft:#123222; --warn:#E8B04B; --warn-soft:#352812; --bad:#F2877C; --bad-soft:#3A1916; --info:#86A9E8; --info-soft:#16253F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--mast)}
+a{color:var(--accent)} a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.mast{background:var(--mast);color:var(--mast-fg);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.mast .top{display:flex;align-items:center;gap:16px;padding-block:14px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.brand .eyebrow{font:600 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--mast-muted)}
+.brand .name{font:600 19px/1.2 var(--display);letter-spacing:-.01em}
+.lang{display:flex;border:1px solid #2B3B57;border-radius:999px;overflow:hidden}
+.lang button{background:transparent;color:var(--mast-muted);border:0;padding:7px 14px;font:600 12.5px var(--body);cursor:pointer;letter-spacing:.04em}
+.lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.theme{background:transparent;border:1px solid #2B3B57;color:var(--mast-muted);border-radius:999px;padding:7px 12px;font:500 12.5px var(--body);cursor:pointer}
+nav.rail{display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+nav.rail a{color:var(--mast-muted);text-decoration:none;font:500 13.5px var(--body);padding:8px 12px;border-radius:8px;white-space:nowrap}
+nav.rail a[aria-current="page"]{color:#fff;background:#1C2A42;box-shadow:inset 0 -2px 0 var(--accent)}
+.de-banner{background:var(--accent-soft);color:var(--ink);font-size:13.5px}
+.de-banner .wrap{display:flex;gap:10px;align-items:center;padding-block:9px;flex-wrap:wrap}
+.de-banner button{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:5px 12px;font:600 12.5px var(--body);cursor:pointer}
+main{padding-block:28px 64px}
+section.view{display:none} section.view.on{display:block}
+h1{font:600 clamp(26px,3.6vw,38px)/1.12 var(--display);letter-spacing:-.02em;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+h2{font:600 21px/1.25 var(--display);color:var(--ink);margin:34px 0 12px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 15.5px/1.3 var(--display);color:var(--ink);margin:0 0 6px}
+.lede{font-size:16.5px;color:var(--fg);max-width:70ch;margin:0 0 6px}
+.kicker{font:600 11.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.muted{color:var(--muted)} .small{font-size:13px} .mono{font-family:var(--mono);font-size:12.5px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))} .g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))} .g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;min-width:0}
+.stat .v{font:600 30px/1.05 var(--display);color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat .l{font-size:13px;color:var(--muted);margin-top:4px}
+.stat .s{font-size:12.5px;margin-top:8px;color:var(--fg)}
+.callout{border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:14px 16px;margin:16px 0}
+.callout.good{border-color:var(--good)} .callout.info{border-color:var(--info)}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 11.5px var(--body);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-active{background:var(--good-soft);color:var(--good)} .p-slipping{background:var(--warn-soft);color:var(--warn)} .p-stale{background:var(--bad-soft);color:var(--bad)} .p-never{background:var(--surface2);color:var(--muted)}
+.p-info{background:var(--info-soft);color:var(--info)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th{text-align:left;font:600 11.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:11px 12px;border-bottom:1px solid var(--line);background:var(--surface2);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right}
+tr.click{cursor:pointer} tr.click:hover td{background:var(--surface2)}
+.bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;min-width:80px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.fam-row{display:grid;grid-template-columns:minmax(150px,1.2fr) 2fr 70px 70px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.fam-row:last-child{border-bottom:0}
+.focus-tag{font:600 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-left:6px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.controls input,.controls select{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:14px var(--body);min-width:0}
+.controls input{flex:1 1 220px}
+.drawer{background:var(--surface2);padding:12px 14px;border-radius:8px}
+.drawer ul{margin:6px 0 0;padding-left:18px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(s);font:600 12px var(--display);background:var(--ink);color:var(--surface);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:1px}
+.links a{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.links a:last-child{border-bottom:0} .links a span:last-child{color:var(--accent);font-size:13px;white-space:nowrap}
+.path h3 .lvl{font:500 12px var(--body);color:var(--muted);margin-left:6px}
+.path ol{margin:6px 0 0;padding-left:20px} .path li{margin:3px 0}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:22px;font-size:12.5px;color:var(--muted)}
+.copy{background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font:500 12px var(--body);color:var(--fg);cursor:pointer;margin-left:6px}
+@media (max-width:640px){.fam-row{grid-template-columns:1fr 60px 60px}.fam-row .bar{grid-column:1/-1;order:5}.stat .v{font-size:26px}}
+@media (prefers-reduced-motion:no-preference){section.view.on{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}
+</style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<header class="mast">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><span class="eyebrow">SVA System Vertrieb Alexander GmbH &nbsp;·&nbsp; Helix</span><span class="name" data-i="title"></span></div>
+      <div class="lang" role="group" aria-label="Language / Sprache">
+        <button id="b-en" type="button" aria-pressed="true">EN</button><button id="b-de" type="button" aria-pressed="false">DE</button>
+      </div>
+      <button class="theme" id="themeBtn" type="button" data-i="theme"></button>
+    </div>
+    <nav class="rail" id="rail" aria-label="Sections"></nav>
+  </div>
+</header>
+<div class="de-banner" id="deBanner"><div class="wrap"><span data-i="bannerText"></span><button type="button" id="bannerBtn" data-i="bannerBtn"></button></div></div>
+
+<main class="wrap" id="main">
+  <section class="view" id="v-overview"></section>
+  <section class="view" id="v-team"></section>
+  <section class="view" id="v-certs"></section>
+  <section class="view" id="v-coverage"></section>
+  <section class="view" id="v-paths"></section>
+  <section class="view" id="v-commercial"></section>
+  <section class="view" id="v-program"></section>
+</main>
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script>
+const DATA = {"asOf": "2026-11-13", "people": [{"name": "Jutta Thomas", "last": "2026-10-21", "days": 23, "status": "active", "enroll": 4, "done": 3, "prog": 1, "rate": 75, "certs": 0, "bca": 0, "bcp": 0, "top": ["sales"], "courses": [{"cat": "Bootcamps", "title": "BMC Helix Solution Demo Bootcamp ILT", "status": "In Progress", "enrolled": "2026-10-08", "completed": "", "type": "Bootcamp", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "Completed", "enrolled": "2026-10-05", "completed": "2026-10-16", "type": "", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "Helix University - Activate AI Disruptors: Discovery to Reach New Champions and Build Pipeline-26-07-15 (Replay)", "status": "Completed", "enrolled": "2026-09-25", "completed": "2026-09-25", "type": "", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "Helix University-Agentic AI Review BMC HelixGPT and ServiceNow-25-06-18 (Replay)", "status": "Completed", "enrolled": "2026-09-25", "completed": "2026-09-25", "type": "", "fam": "sales", "excluded": false}], "certList": []}, {"name": "Christoph Zurek", "last": "2026-10-21", "days": 23, "status": "active", "enroll": 4, "done": 1, "prog": 2, "rate": 25, "certs": 0, "bca": 0, "bcp": 0, "top": ["sales"], "courses": [{"cat": "Global Sales Enablement", "title": "Helix University - Activate AI Disruptors: Discovery to Reach New Champions and Build Pipeline-26-07-15 (Replay)", "status": "In Progress", "enrolled": "2026-10-16", "completed": "", "type": "", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "Helix University-What's New with BMC Helix 25.2 AIOps and Open Telemetry-25-05-07 (Replay)", "status": "In Progress", "enrolled": "2026-10-15", "completed": "", "type": "", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "Completed", "enrolled": "2026-10-05", "completed": "2026-10-20", "type": "", "fam": "sales", "excluded": false}, {"cat": "Global Sales Enablement", "title": "Helix University - Game On! - 26-04-22", "status": "Enrolled", "enrolled": "2026-10-20", "completed": "", "type": "", "fam": "sales", "excluded": false}], "certList": []}, {"name": "Amer Succer", "last": "2026-10-16", "days": 28, "status": "active", "enroll": 1, "done": 0, "prog": 0, "rate": 0, "certs": 0, "bca": 0, "bcp": 0, "top": [], "courses": [{"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "Enrolled", "enrolled": "2026-10-16", "completed": "", "type": "", "fam": "sales", "excluded": false}], "certList": []}, {"name": "Lukas Alexander Piontek", "last": "2026-10-16", "days": 28, "status": "active", "enroll": 1, "done": 0, "prog": 1, "rate": 0, "certs": 0, "bca": 0, "bcp": 0, "top": [], "courses": [{"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "In Progress", "enrolled": "2026-10-05", "completed": "", "type": "", "fam": "sales", "excluded": false}], "certList": []}, {"name": "Mario Mrohs", "last": "2026-11-02", "days": 11, "status": "active", "enroll": 5, "done": 0, "prog": 3, "rate": 0, "certs": 0, "bca": 0, "bcp": 0, "top": [], "courses": [{"cat": "Helix Business Workflows", "title": "BMC Helix Business Workflows 21.x Fundamentals Administering Skills Assessment", "status": "In Progress", "enrolled": "2026-10-23", "completed": "", "type": "Skill Assessment", "fam": "itsm", "excluded": false}, {"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "In Progress", "enrolled": "2026-10-05", "completed": "", "type": "", "fam": "sales", "excluded": false}, {"cat": "Bootcamps", "title": "BMC Helix Solution Demo Bootcamp ILT", "status": "In Progress", "enrolled": "2026-10-07", "completed": "", "type": "Bootcamp", "fam": "sales", "excluded": false}, {"cat": "Helix IT Service Management", "title": "BMC Helix ITSM 22.x Skills Assessment", "status": "Enrolled", "enrolled": "2026-11-02", "completed": "", "type": "Skill Assessment", "fam": "itsm", "excluded": false}, {"cat": "Helix IT Service Management", "title": "BMC Helix ITSM: Administering Data and Applications Skills Assessment", "status": "Enrolled", "enrolled": "2026-11-02", "completed": "", "type": "Skill Assessment", "fam": "itsm", "excluded": false}], "certList": []}, {"name": "Paul Schmoranz", "last": "2026-10-16", "days": 28, "status": "active", "enroll": 2, "done": 0, "prog": 2, "rate": 0, "certs": 0, "bca": 0, "bcp": 0, "top": [], "courses": [{"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "In Progress", "enrolled": "2026-10-05", "completed": "", "type": "", "fam": "sales", "excluded": false}, {"cat": "Bootcamps", "title": "BMC Helix Solution Demo Bootcamp ILT", "status": "In Progress", "enrolled": "2026-10-07", "completed": "", "type": "Bootcamp", "fam": "sales", "excluded": false}], "certList": []}, {"name": "Sylvia Witte", "last": "2026-10-20", "days": 24, "status": "active", "enroll": 1, "done": 0, "prog": 1, "rate": 0, "certs": 0, "bca": 0, "bcp": 0, "top": [], "courses": [{"cat": "Global Sales Enablement", "title": "BMC Helix Partner Sales Certification: Foundation", "status": "In Progress", "enrolled": "2026-10-16", "completed": "", "type": "", "fam": "sales", "excluded": false}], "certList": []}]};
+const L = {
+ NIKKI:"nicole.sanchez@helixops.ai", TEAM:"partner.success@helixops.ai", NET:"Partner.Network@helixops.ai",
+ LEARN:"https://learn.helixops.ai/", HOME:"https://learn.helixops.ai/pages/42/helix-learning-partner-home",
+ SDB:"https://learn.helixops.ai/learn/courses/29281/bmc-helix-solution-demo-bootcamp-ilt",
+ CAL:"https://ngsanchez124-dot.github.io/bootcamp-schedule/",
+ HUB:"https://bmchelix.seismic.com/Link/Content/DCjHFFHGhBf8B8Q2H8hTdDHpFj63",
+ TRACKS:"https://www.helixops.ai/content/dam/bmc/education/BMCHelix_Learning_Tracks.pdf",
+ REG:"https://webapps.helixops.ai/register/index.html",
+ CHECK:"https://community.helixops.ai/s/news/a7MVu000006uyf5MAA/partner-onboarding-checklist-for-solution-provider-partners",
+ QS:"https://www.helixops.ai/content/dam/partnerhelp/documents/register-for-bmc-helix-resources-quick-start.pdf",
+ LP:"https://learn.helixops.ai/learn/learning-plans/"
+};
+const FAM = {ops:["Operations Management & AIOps","Operations Management & AIOps"],disc:["Discovery & CMDB","Discovery & CMDB"],itsm:["ITSM & Digital Workplace","ITSM & Digital Workplace"],auto:["Automation","Automation"],gpt:["HelixGPT & AI","HelixGPT & KI"],plat:["Platform & Innovation Studio","Plattform & Innovation Studio"],sales:["Sales & Presales","Vertrieb & Presales"],other:["Other","Sonstige"]};
+const FOCUS = ["ops","disc","itsm","auto","gpt"];
+const T = {
+ en:{title:"Education & Readiness Review", theme:"Theme", bannerText:"Diese Übersicht ist vollständig auf Deutsch verfügbar.", bannerBtn:"Auf Deutsch lesen",
+   nav:{overview:"Overview",team:"Team",certs:"Certifications",coverage:"Coverage",paths:"Learning paths",commercial:"Commercial",program:"Program & links"},
+   asOf:"Data as of", source:"Learn@Helix course and certification records for the SVA branch, Helix partner records, and program information.",
+   status:{active:"Active",slipping:"Slowing",stale:"Inactive",never:"Not started"},
+   statusHelp:"Active: learning activity in the last 30 days. Slowing: 31 to 90 days. Inactive: more than 90 days. Not started: no recorded activity.",
+ },
+ de:{title:"Education- & Readiness-Review", theme:"Design", bannerText:"This review is also available in English.", bannerBtn:"Read in English",
+   nav:{overview:"Überblick",team:"Team",certs:"Zertifizierungen",coverage:"Abdeckung",paths:"Lernpfade",commercial:"Vertrieb",program:"Programm & Links"},
+   asOf:"Datenstand", source:"Kurs- und Zertifizierungsdaten aus Learn@Helix für den SVA-Bereich, Helix-Partnerdaten und Programminformationen.",
+   status:{active:"Aktiv",slipping:"Nachlassend",stale:"Inaktiv",never:"Nicht begonnen"},
+   statusHelp:"Aktiv: Lernaktivität in den letzten 30 Tagen. Nachlassend: 31 bis 90 Tage. Inaktiv: mehr als 90 Tage. Nicht begonnen: keine erfasste Aktivität.",
+ }
+};
+let lang="en"; try{const s=localStorage.getItem("sva-lang"); if(s==="de"||s==="en") lang=s;}catch(e){}
+const tr=(en,de)=>lang==="en"?en:de;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const a=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`;
+const fd=d=>{if(!d)return "–";const x=new Date(d+"T00:00:00");return x.toLocaleDateString(lang==="en"?"en-US":"de-DE",{day:"numeric",month:"short",year:"numeric"});};
+const P = DATA.people||[];
+const tot = (()=>{const t={people:P.length,enroll:0,done:0,prog:0,certs:0,bca:0,bcp:0,holders:0,expSoon:0,status:{active:0,slipping:0,stale:0,never:0}};
+  P.forEach(p=>{t.enroll+=p.enroll;t.done+=p.done;t.prog+=p.prog;t.certs+=p.certs;t.bca+=p.bca;t.bcp+=p.bcp;if(p.certs)t.holders++;t.status[p.status]++;
+    p.certList.forEach(c=>{if(c.active&&c.renew&&c.renew<="2027-03-31")t.expSoon++;});});t.rate=t.enroll?Math.round(100*t.done/t.enroll):0;return t;})();
+const famStats=(()=>{const f={};Object.keys(FAM).forEach(k=>f[k]={certPeople:new Set(),certs:0,done:0,learners:new Set()});
+  P.forEach(p=>{p.certList.forEach(c=>{if(c.active){f[c.fam].certs++;f[c.fam].certPeople.add(p.name);}});p.courses.forEach(c=>{if(c.status==="Completed"){f[c.fam].done++;f[c.fam].learners.add(p.name);}});});return f;})();
+const pill=s=>`<span class="pill p-${s}">${T[lang].status[s]}</span>`;
+const hasCourse=(p,rx,st)=>p.courses.some(c=>rx.test(c.title)&&(!st||c.status===st));
+const salesDone=()=>P.filter(p=>hasCourse(p,/partner sales certification/i,"Completed"));
+const salesOpen=()=>P.filter(p=>hasCourse(p,/partner sales certification/i)&&!hasCourse(p,/partner sales certification/i,"Completed"));
+const demoAll=()=>P.filter(p=>hasCourse(p,/solution demo bootcamp/i));
+
+function overview(){
+  const t=tot, best=Object.entries(famStats).filter(([k])=>k!=="other").sort((x,y)=>y[1].certPeople.size-x[1].certPeople.size)[0];
+  const gaps=FOCUS.filter(k=>famStats[k].certPeople.size===0).map(k=>FAM[k][lang==="en"?0:1]);
+  return `<div class="kicker">${tr("SVA x Helix","SVA x Helix")}</div>
+  <h1>${tr("Where SVA's Helix team stands, and the fastest way forward","Wo das Helix-Team von SVA steht und wie es am schnellsten weitergeht")}</h1>
+  <p class="lede">${tr(`A complete picture of SVA's Helix learning and certification record, mapped against the product areas in SVA's current opportunities, with a clear path for every consultant.`,`Ein vollständiges Bild der Helix-Lern- und Zertifizierungsdaten von SVA, abgeglichen mit den Produktbereichen der aktuellen Opportunities, mit einem klaren Pfad für jeden Consultant.`)}</p>
+  <p class="small muted">${T[lang].asOf} ${fd(DATA.asOf)} · ${T[lang].source}</p>
+  <div class="grid g4" style="margin-top:18px">
+    <div class="card stat"><div class="v">${t.people}</div><div class="l">${tr("people in SVA's Learn@Helix branch","Personen im SVA-Bereich in Learn@Helix")}</div><div class="s">${t.status.active} ${tr("active in the last 30 days","in den letzten 30 Tagen aktiv")}</div></div>
+    <div class="card stat"><div class="v">${t.certs}</div><div class="l">${tr("active Helix certifications","aktive Helix-Zertifizierungen")}</div><div class="s">${t.holders} ${tr("certified people","zertifizierte Personen")} · ${t.bca} Associate · ${t.bcp} Professional</div></div>
+    <div class="card stat"><div class="v">${t.done}</div><div class="l">${tr("courses completed","abgeschlossene Kurse")}</div><div class="s">${t.prog} ${tr("in progress","in Bearbeitung")} · ${t.rate}% ${tr("completion rate","Abschlussquote")}</div></div>
+    <div class="card stat"><div class="v">5</div><div class="l">${tr("product learning paths ready","Lernpfade nach Produkt bereit")}</div><div class="s">${tr("Foundations and Associate exams included","Grundlagen und Associate-Prüfungen inklusive")}</div></div>
+  </div>
+  <h2>${tr("What this means","Was das bedeutet")}</h2>
+  <div class="grid g3">
+    <div class="card"><h3>${tr("A strong commercial start","Ein starker vertrieblicher Start")}</h3><p class="small">${tr(`${salesDone().length} people have completed the BMC Helix Partner Sales Certification: Foundation and ${salesOpen().length} more are working on it. ${demoAll().length} consultants joined the October Solution Demo Bootcamp.`,`${salesDone().length} Personen haben die BMC Helix Partner Sales Certification: Foundation abgeschlossen, ${salesOpen().length} weitere sind dabei. ${demoAll().length} Consultants haben am Solution Demo Bootcamp im Oktober teilgenommen.`)}</p></div>
+    <div class="card"><h3>${tr("The gap to close","Die Lücke, die es zu schließen gilt")}</h3><p class="small">${t.certs?(gaps.length?tr("No certified consultant yet in: ","Noch kein zertifizierter Consultant in: ")+esc(gaps.join(", ")):tr("Every focus area has a certified consultant.","Jeder Fokusbereich hat einen zertifizierten Consultant.")):tr("No technical Helix certification yet, and technical learning has only just started with a few skills assessments. This is the biggest lever for delivery readiness, and the foundations and Associate exams are included.","Noch keine technische Helix-Zertifizierung, und das technische Lernen hat mit einigen Skills Assessments gerade erst begonnen. Das ist der größte Hebel für die Delivery-Readiness, und Grundlagen sowie Associate-Prüfungen sind inklusive.")}</p></div>
+    <div class="card"><h3>${tr("Next 30 days","Nächste 30 Tage")}</h3><p class="small">${tr("Submit the Solution Demo capstones, finish the open Sales Foundation enrollments, and start every delivery consultant on their product foundations, with first Associate exams in January.","Solution-Demo-Capstones einreichen, offene Sales-Foundation-Einschreibungen abschließen und alle Delivery Consultants mit den Grundlagen ihres Produkts starten; erste Associate-Prüfungen im Januar.")}</p></div>
+  </div>
+  <div class="callout good"><strong>${tr("Included for every SVA consultant:","Für jeden SVA-Consultant inklusive:")}</strong> ${tr("since November 11, 2026, foundational web-based training and Certified Associate exams are an included entitlement for all Helix partners. Registered users receive it automatically.","Seit dem 11. November 2026 sind webbasierte Grundlagentrainings und Certified-Associate-Prüfungen für alle Helix-Partner inklusive. Registrierte Nutzer erhalten die Berechtigung automatisch.")}</div>
+  <h2>${tr("Team activity","Aktivität im Team")}</h2>
+  <div class="card"><div class="grid g4">${["active","slipping","stale","never"].map(s=>`<div>${pill(s)}<div class="stat"><div class="v" style="font-size:24px;margin-top:6px">${t.status[s]}</div></div></div>`).join("")}</div><p class="small muted" style="margin:12px 0 0">${T[lang].statusHelp}</p></div>`;
+}
+
+function team(){
+  return `<div class="kicker">${tr("Team","Team")}</div><h1>${tr("Consultant roster","Consultant-Übersicht")}</h1>
+  <p class="lede">${tr("Everyone in SVA's Learn@Helix branch. Select a row to see that person's courses and certifications.","Alle Personen im SVA-Bereich von Learn@Helix. Wählen Sie eine Zeile, um Kurse und Zertifizierungen der Person zu sehen.")}</p>
+  <div class="controls"><input id="q" type="search" placeholder="${tr("Search by name","Nach Namen suchen")}" aria-label="${tr("Search by name","Nach Namen suchen")}">
+  <select id="fs" aria-label="Status"><option value="">${tr("All statuses","Alle Status")}</option>${["active","slipping","stale","never"].map(s=>`<option value="${s}">${T[lang].status[s]}</option>`).join("")}</select></div>
+  <div class="tbl"><table><thead><tr><th>${tr("Name","Name")}</th><th>Status</th><th class="num">${tr("Courses done","Kurse abgeschl.")}</th><th class="num">${tr("In progress","In Bearb.")}</th><th class="num">${tr("Active certs","Aktive Zert.")}</th><th>${tr("Main areas","Schwerpunkte")}</th><th>${tr("Last activity","Letzte Aktivität")}</th></tr></thead><tbody id="rb"></tbody></table></div>
+  <p class="small muted">${T[lang].statusHelp} ${tr("Colleagues who are registered but have not enrolled in any course yet do not appear here.","Registrierte Kolleginnen und Kollegen ohne Kurseinschreibung erscheinen hier noch nicht.")}</p>`;
+}
+function fillTeam(){
+  const q=(document.getElementById("q").value||"").toLowerCase(), fs=document.getElementById("fs").value;
+  const rows=P.filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!fs||p.status===fs));
+  document.getElementById("rb").innerHTML=rows.length?rows.map((p,i)=>`<tr class="click" tabindex="0" data-i="${P.indexOf(p)}"><td><strong>${esc(p.name)}</strong></td><td>${pill(p.status)}</td><td class="num">${p.done}</td><td class="num">${p.prog}</td><td class="num">${p.certs}</td><td class="small">${p.top.map(f=>esc(FAM[f][lang==="en"?0:1])).join(", ")||"–"}</td><td class="small">${fd(p.last)}</td></tr><tr hidden id="d${P.indexOf(p)}"><td colspan="7"><div class="drawer">${drawer(p)}</div></td></tr>`).join(""):`<tr><td colspan="7" class="empty">${tr("No one matches this filter.","Keine Treffer für diesen Filter.")}</td></tr>`;
+  document.querySelectorAll("tr.click").forEach(r=>{const go=()=>{const d=document.getElementById("d"+r.dataset.i);d.hidden=!d.hidden;};r.onclick=go;r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}};});
+}
+function drawer(p){
+  const c=p.certList.length?`<ul>${p.certList.map(c=>`<li>${esc(c.title)} <span class="muted small">· ${c.active?tr("valid until","gültig bis"):tr("expired","abgelaufen")} ${fd(c.renew)}</span></li>`).join("")}</ul>`:`<p class="small muted">${tr("No certifications yet.","Noch keine Zertifizierungen.")}</p>`;
+  const k=p.courses.slice(0,14);
+  return `<div class="grid g2"><div><h3>${tr("Certifications","Zertifizierungen")}</h3>${c}</div><div><h3>${tr("Courses","Kurse")} (${p.enroll})</h3>${k.length?`<ul>${k.map(x=>`<li>${esc(x.title)} <span class="muted small">· ${x.status==="Completed"?tr("completed","abgeschlossen"):x.status==="In Progress"?tr("in progress","in Bearbeitung"):tr("enrolled","eingeschrieben")}</span></li>`).join("")}</ul>${p.courses.length>14?`<p class="small muted">+${p.courses.length-14} ${tr("more","weitere")}</p>`:""}`:`<p class="small muted">${tr("No course activity yet.","Noch keine Kursaktivität.")}</p>`}</div></div>`;
+}
+
+function certs(){
+  const all=[];P.forEach(p=>p.certList.forEach(c=>all.push({...c,person:p.name})));all.sort((x,y)=>(x.renew||"9")<(y.renew||"9")?-1:1);
+  return `<div class="kicker">${tr("Certifications","Zertifizierungen")}</div><h1>${tr("Certification register","Zertifizierungsregister")}</h1>
+  <p class="lede">${tr("Every Helix certification held by SVA's team, ordered by renewal date so nothing lapses unnoticed.","Alle Helix-Zertifizierungen des SVA-Teams, sortiert nach Erneuerungsdatum, damit nichts unbemerkt abläuft.")}</p>
+  <div class="grid g4"><div class="card stat"><div class="v">${tot.certs}</div><div class="l">${tr("active","aktiv")}</div></div><div class="card stat"><div class="v">${tot.bca}</div><div class="l">Associate (BCA)</div></div><div class="card stat"><div class="v">${tot.bcp}</div><div class="l">Professional (BCP)</div></div><div class="card stat"><div class="v">${tot.expSoon}</div><div class="l">${tr("renew by March 31, 2027","Erneuerung bis 31. März 2027")}</div></div></div>
+  <h2>${tr("All certifications","Alle Zertifizierungen")}</h2>
+  ${all.length?`<div class="tbl"><table><thead><tr><th>${tr("Certification","Zertifizierung")}</th><th>${tr("Holder","Inhaber")}</th><th>${tr("Level","Stufe")}</th><th>${tr("Issued","Ausgestellt")}</th><th>${tr("Renew by","Erneuern bis")}</th><th>Status</th></tr></thead><tbody>${all.map(c=>`<tr><td>${esc(c.title)}</td><td>${esc(c.person)}</td><td class="mono">${c.level}</td><td class="small">${fd(c.issued)}</td><td class="small">${fd(c.renew)}</td><td>${c.active?`<span class="pill p-active">${tr("Valid","Gültig")}</span>`:`<span class="pill p-stale">${tr("Expired","Abgelaufen")}</span>`}</td></tr>`).join("")}</tbody></table></div>`:`<div class="card empty">${tr("No Helix certifications are recorded for SVA yet. The Associate exams in the Learning paths tab are included at no cost and are the fastest first step.","Für SVA sind noch keine Helix-Zertifizierungen erfasst. Die Associate-Prüfungen im Bereich Lernpfade sind kostenfrei inklusive und der schnellste erste Schritt.")}</div>`}`;
+}
+
+function coverage(){
+  const keys=Object.keys(FAM).filter(k=>k!=="other"), max=Math.max(1,...keys.map(k=>famStats[k].learners.size));
+  return `<div class="kicker">${tr("Coverage","Abdeckung")}</div><h1>${tr("Coverage by product area","Abdeckung nach Produktbereich")}</h1>
+  <p class="lede">${tr("Who has learned and who is certified in each Helix product area. Areas marked Focus are those in SVA's current opportunities.","Wer in welchem Helix-Produktbereich gelernt hat und zertifiziert ist. Mit Fokus markierte Bereiche betreffen die aktuellen Opportunities von SVA.")}</p>
+  <div class="card"><div class="fam-row small muted" style="padding-top:0"><span>${tr("Product area","Produktbereich")}</span><span>${tr("People with completed courses","Personen mit abgeschlossenen Kursen")}</span><span class="num">${tr("Learners","Lernende")}</span><span class="num">${tr("Certified","Zertifiziert")}</span></div>
+  ${keys.map(k=>{const s=famStats[k];return `<div class="fam-row"><span><strong>${esc(FAM[k][lang==="en"?0:1])}</strong>${FOCUS.includes(k)?`<span class="focus-tag">${tr("Focus","Fokus")}</span>`:""}</span><div class="bar" aria-hidden="true"><i style="width:${Math.round(100*s.learners.size/max)}%"></i></div><span class="num">${s.learners.size}</span><span class="num"><strong>${s.certPeople.size}</strong></span></div>`;}).join("")}</div>
+  <div class="callout info">${tr("Recommended minimum for delivery: at least one Associate-certified consultant per product in each active opportunity, and a named delivery lead who has completed the advanced track or bootcamp.","Empfohlenes Minimum für die Delivery: mindestens ein Associate-zertifizierter Consultant je Produkt in jeder aktiven Opportunity sowie ein benannter Delivery Lead mit abgeschlossener Vertiefung oder Bootcamp.")}</div>`;
+}
+
+const PATHS=[
+ {k:"ops",plans:[["BMC Helix Operations Management: All roles","31/bmc-helix-operations-management-all-roles"],["BMC Helix Service Monitoring/AIOps: All Roles","39/bmc-helix-service-monitoringaiops-all-roles"],["BMC Helix Operations Management: Administrators & Consultants","60/bmc-helix-operations-management-administrators-consultants"]],
+  steps:["BMC Helix Operations Management: Overview (WBT)","BMC Helix Operations Management: Fundamentals Monitor Policies (WBT)","BMC Helix Operations Management: Fundamentals Event Policy (WBT)","BMC Helix Service Monitoring: Fundamentals Configuring Situations (WBT)"],
+  exam:["BMC Certified Associate: Helix Operations Management 25.x for Administrators & Consultants Online Exam","BMC Certified Associate: Helix Service Monitoring 26.x for Operators Online Exam"],deep:"BMC Helix Operations Management 25.x: Fundamentals Administering (ILT)"},
+ {k:"disc",plans:[["BMC Discovery 24.x: Administrator","6/bmc-discovery-24x-administrator"]],steps:["BMC Discovery 24.x: Fundamentals Concepts (WBT)","BMC Discovery 24.x: Fundamentals Administering - Part 1 (ASP)","BMC Discovery 24.x: Fundamentals Administering - Part 2 (ASP)"],exam:["BMC Certified Associate: Discovery 24.x for Administrators Online Exam"],deep:"BMC Helix Discovery 26.x: Fundamentals Deep Container Discovery (WBT)"},
+ {k:"itsm",plans:[["BMC Helix ITSM 23.x: Users","30/bmc-helix-itsm-23x-users"],["BMC Helix ITSM 23.x: Administrator",""]],steps:["BMC Helix ITSM 23.x: Fundamentals Using (WBT)","Helix 26.x: Fundamentals Using Innovation Suite Knowledge Management (WBT)"],exam:[],deep:"BMC AR System 23.x: Fundamentals Administering - Part 1 (WBT)"},
+ {k:"auto",plans:[["TrueSight Server Automation 25.x Fundamentals Learning Track","51/truesight-server-automation-25x-fundamentals-learning-track"]],steps:["BMC Helix TrueSight Server Automation 25.x: Architecture and Components (WBT)"],exam:["BMC Certified Associate: TrueSight Server Automation 25.x Online Exam"],deep:"TrueSight Server Automation 25.x: Fundamentals Administering (ILT)"},
+ {k:"gpt",plans:[["BMC HelixGPT Users","43/bmc-helixgpt-users"]],steps:["BMC HelixGPT 26.x: Fundamentals Concepts (WBT)"],exam:[],deep:""}
+];
+const NAMED=[
+ {n:"Paul Schmoranz",f:["Operations Management & AIOps","Discovery & CMDB (foundations)","HelixGPT","Solution Demo certification"],fde:["Operations Management & AIOps","Discovery & CMDB (Grundlagen)","HelixGPT","Solution-Demo-Zertifizierung"]},
+ {n:"Mario Mrohs",f:["Operations Management & AIOps","Discovery & CMDB","TrueSight Server Automation"],fde:["Operations Management & AIOps","Discovery & CMDB","TrueSight Server Automation"]},
+ {n:"Jutta Thomas",f:["Leading SVA's enablement and team roster","Helix ITSM foundations","HelixGPT overview"],fde:["Steuerung des SVA-Enablements und der Team-Übersicht","Grundlagen Helix ITSM","HelixGPT-Überblick"]}
+];
+function paths(){
+  return `<div class="kicker">${tr("Learning paths","Lernpfade")}</div><h1>${tr("A clear path for every consultant","Ein klarer Pfad für jeden Consultant")}</h1>
+  <p class="lede">${tr("Each product path runs the same way: included foundations, an included Associate exam, then advanced or instructor-led depth where an opportunity needs it. Titles and links are exactly as listed in Learn@Helix.","Jeder Produktpfad folgt demselben Ablauf: inklusive Grundlagen, eine inklusive Associate-Prüfung, dann Vertiefung oder trainergeführtes Training, wo eine Opportunity es erfordert. Titel und Links entsprechen exakt Learn@Helix.")}</p>
+  <h2>${tr("Personal plans already prepared","Bereits erstellte persönliche Pläne")}</h2>
+  <div class="grid g3">${NAMED.map(x=>`<div class="card"><h3>${esc(x.n)}</h3><ul class="small" style="margin:6px 0 0;padding-left:18px">${(lang==="en"?x.f:x.fde).map(i=>`<li>${esc(i)}</li>`).join("")}</ul><p class="small muted" style="margin:8px 0 0">${tr("12-week personal plan (EN/DE) sent November 13, 2026.","12-Wochen-Plan (EN/DE) am 13. November 2026 versendet.")}</p></div>`).join("")}</div>
+  <h2>${tr("Paths by product area","Pfade nach Produktbereich")}</h2>
+  <div class="grid g2">${PATHS.map(p=>`<div class="card path"><h3>${esc(FAM[p.k][lang==="en"?0:1])}${FOCUS.includes(p.k)?`<span class="focus-tag">${tr("Focus","Fokus")}</span>`:""}</h3>
+   <p class="small" style="margin:4px 0 8px">${p.plans.map(([t,u])=>u?a(L.LP+u,t):esc(t)).join(" · ")}</p>
+   <div class="small"><strong>${tr("Start with","Beginnen mit")}</strong><ol>${p.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>
+   ${p.exam.length?`<div class="small" style="margin-top:8px"><strong>${tr("Certify","Zertifizieren")}</strong><ol>${p.exam.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>`:""}
+   ${p.deep?`<div class="small" style="margin-top:8px"><strong>${tr("Go deeper","Vertiefen")}</strong>: ${esc(p.deep)}</div>`:""}</div>`).join("")}</div>
+  <p class="small muted">${tr("Every course and exam is also badged in the","Alle Kurse und Prüfungen sind auch aufgeführt im")} ${a(L.TRACKS,tr("Helix Learning Paths and Certifications guide (PDF)","Leitfaden Helix Learning Paths and Certifications (PDF)"))}.</p>`;
+}
+
+function commercial(){
+  const salesCert=P.filter(p=>hasCourse(p,/partner sales certification|certified seller|value selling/i,"Completed"));const salesAny=P.filter(p=>hasCourse(p,/partner sales certification/i));
+  const demo=P.filter(p=>hasCourse(p,/solution demo bootcamp/i));
+  const demoDone=P.filter(p=>hasCourse(p,/solution demo bootcamp/i,"Completed"));
+  return `<div class="kicker">${tr("Commercial","Vertrieb")}</div><h1>${tr("Commercial readiness","Vertriebliche Readiness")}</h1>
+  <p class="lede">${tr("How ready SVA is to position, demo and win Helix deals, alongside the partnership activity already under way.","Wie gut SVA aufgestellt ist, um Helix zu positionieren, zu demonstrieren und Deals zu gewinnen, ergänzt um die bereits laufenden Partnerschaftsaktivitäten.")}</p>
+  <div class="grid g4">
+   <div class="card stat"><div class="v">2–3</div><div class="l">${tr("opportunities in progress","Opportunities in Arbeit")}</div><div class="s">${tr("Per Helix partner management","Laut Helix Partner Management")}</div></div>
+   <div class="card stat"><div class="v">Gold</div><div class="l">${tr("sponsor, Helix Frankfurt Roadshow","Sponsor, Helix Roadshow Frankfurt")}</div><div class="s">${tr("November 2026","November 2026")}</div></div>
+   <div class="card stat"><div class="v">${salesCert.length}</div><div class="l">${tr("completed Partner Sales Certification: Foundation","Partner Sales Certification: Foundation abgeschlossen")}</div><div class="s">${salesOpen().length} ${tr("more in progress","weitere in Bearbeitung")}</div></div>
+   <div class="card stat"><div class="v">${demo.length}</div><div class="l">${tr("enrolled in the Solution Demo Bootcamp","im Solution Demo Bootcamp eingeschrieben")}</div><div class="s">${demoDone.length?demoDone.length+" "+tr("completed","abgeschlossen"):tr("Capstone demo is the remaining step","Abschluss-Demo ist der verbleibende Schritt")}</div></div>
+  </div>
+  <h2>${tr("Partnership at a glance","Partnerschaft im Überblick")}</h2>
+  <div class="tbl"><table><tbody>
+   <tr><td><strong>${tr("Partner record","Partner-Datensatz")}</strong></td><td>${tr("Active, Germany","Aktiv, Deutschland")} · CSN <span class="mono">20021472</span></td></tr>
+   <tr><td><strong>${tr("Program tier","Programmstufe")}</strong></td><td>Enrolled · ${tr("certification for up to 5 people, bootcamps, sandbox, 60 lab hours","Zertifizierung für bis zu 5 Personen, Bootcamps, Sandbox, 60 Lab-Stunden")}</td></tr>
+   <tr><td><strong>${tr("Sales and presales tools","Vertriebs- und Presales-Tools")}</strong></td><td>Sales Edge ✓ · Seismic Partner Presales Hub ✓ · Solution Partner Place ✓</td></tr>
+   <tr><td><strong>${tr("Events","Events")}</strong></td><td>${tr("Gold Sponsor, Helix Frankfurt Roadshow; SVA team registered for the Helix Ascent Partner Summit and the Helix User Group Germany (all November 2026)","Gold Sponsor, Helix Roadshow Frankfurt; SVA-Team registriert für den Helix Ascent Partner Summit und die Helix User Group Germany (alle November 2026)")}</td></tr>
+   <tr><td><strong>${tr("Hands-on product exposure","Praktische Produkterfahrung")}</strong></td><td>${tr("SVA consultants have run Helix Operations Management trials and followed the Helix 26.3 on-premises release","SVA-Consultants haben Helix-Operations-Management-Trials durchgeführt und das Helix-Release 26.3 für On-Premises verfolgt")}</td></tr>
+   <tr><td><strong>${tr("Opportunities","Opportunities")}</strong></td><td>${tr("2–3 in progress. Registering them with Helix unlocks presales, demo-tenant and delivery support from day one.","2–3 in Arbeit. Die Registrierung bei Helix erschließt Presales-, Demo-Tenant- und Delivery-Unterstützung ab dem ersten Tag.")}</td></tr>
+  </tbody></table></div>
+  <h2>${tr("Sales and presales people","Vertriebs- und Presales-Personen")}</h2>
+  ${(salesAny.length||demo.length)?`<div class="tbl"><table><thead><tr><th>${tr("Name","Name")}</th><th>${tr("Helix sales certification","Helix-Vertriebszertifizierung")}</th><th>Solution Demo Bootcamp</th></tr></thead><tbody>${[...new Set([...salesAny,...demo])].map(p=>`<tr><td>${esc(p.name)}</td><td>${hasCourse(p,/partner sales certification|certified seller|value selling/i,"Completed")?`<span class="pill p-active">${tr("Completed","Abgeschlossen")}</span>`:hasCourse(p,/partner sales certification/i)?`<span class="pill p-info">${tr("In progress","In Bearbeitung")}</span>`:"–"}</td><td>${hasCourse(p,/solution demo bootcamp/i,"Completed")?`<span class="pill p-active">${tr("Completed","Abgeschlossen")}</span>`:hasCourse(p,/solution demo bootcamp/i)?`<span class="pill p-info">${tr("Enrolled","Eingeschrieben")}</span>`:"–"}</td></tr>`).join("")}</tbody></table></div>`:`<div class="card empty">${tr("No Helix sales certifications or Solution Demo Bootcamp enrollments are recorded in Learn@Helix yet.","In Learn@Helix sind noch keine Helix-Vertriebszertifizierungen oder Solution-Demo-Bootcamp-Einschreibungen erfasst.")}</div>`}
+  <div class="callout"><strong>${tr("Recommended next steps","Empfohlene nächste Schritte")}</strong><ol class="small" style="margin:6px 0 0;padding-left:18px"><li>${tr("Account and presales leads complete the BMC Helix Partner Sales Certification: Foundation in Learn@Helix.","Account- und Presales-Verantwortliche absolvieren die BMC Helix Partner Sales Certification: Foundation in Learn@Helix.")}</li><li>${tr("Anyone presenting Helix to customers joins the next","Wer Helix bei Kunden präsentiert, nimmt am nächsten")} ${a(L.SDB,"Solution Demo Bootcamp")}${tr(" and submits the capstone demo."," teil und reicht die Abschluss-Demo ein.")}</li><li>${tr("Register the current opportunities with Helix through Christian Paltinger.","Die aktuellen Opportunities über Christian Paltinger bei Helix registrieren.")}</li><li>${tr("Request a 14-day demo tenant through Christian ahead of each customer demo.","Vor jeder Kundendemo über Christian einen 14-Tage-Demo-Tenant anfragen.")}</li></ol></div>`;
+}
+
+function program(){
+  const links=[[L.HOME,tr("Helix Learning partner home (sign in)","Helix-Learning-Partnerseite (Anmeldung)")],[L.LEARN,"Learn@Helix"],[L.CAL,tr("Helix bootcamp calendar","Helix-Bootcamp-Kalender")],[L.SDB,tr("Solution Demo Bootcamp registration","Registrierung Solution Demo Bootcamp")],[L.HUB,"Seismic Partner Presales Hub"],[L.TRACKS,tr("Learning Paths and Certifications guide (PDF)","Leitfaden Learning Paths and Certifications (PDF)")],[L.CHECK,tr("Partner onboarding checklist","Partner-Onboarding-Checkliste")],[L.QS,tr("Registration quick start guide (PDF)","Kurzanleitung Registrierung (PDF)")],[L.REG,tr("Helix account registration (new colleagues)","Helix-Kontoregistrierung (neue Kolleginnen und Kollegen)")]];
+  return `<div class="kicker">${tr("Program","Programm")}</div><h1>${tr("Program benefits, contacts and links","Programmvorteile, Kontakte und Links")}</h1>
+  <div class="grid g2">
+   <div class="card"><h3>${tr("Program tiers","Programmstufen")}</h3><div class="tbl" style="border:0"><table><thead><tr><th>${tr("Tier","Stufe")}</th><th>${tr("Certification included","Inklusive Zertifizierung")}</th></tr></thead><tbody><tr><td><strong>Enrolled</strong> <span class="pill p-info">SVA</span></td><td>${tr("Up to 5 people + bootcamps, sandbox, 60 lab hours","Bis zu 5 Personen + Bootcamps, Sandbox, 60 Lab-Stunden")}</td></tr><tr><td><strong>Authorized</strong></td><td>${tr("Up to 10 people","Bis zu 10 Personen")}</td></tr><tr><td><strong>Premier</strong></td><td>${tr("Up to 30 people","Bis zu 30 Personen")}</td></tr><tr><td><strong>Elite</strong></td><td>${tr("Unlimited","Unbegrenzt")}</td></tr></tbody></table></div><p class="small muted" style="margin:10px 0 0">${tr("Foundations and Associate exams are included for everyone and do not use the tier allocation.","Grundlagen und Associate-Prüfungen sind für alle inklusive und belasten das Stufenkontingent nicht.")}</p></div>
+   <div class="card links"><h3>${tr("Links","Links")}</h3>${links.map(([u,t])=>`<a href="${u}" target="_blank" rel="noopener"><span>${esc(t)}</span><span>${tr("Open","Öffnen")} ↗</span></a>`).join("")}</div>
+  </div>
+  <h2>${tr("Bringing a colleague onto Helix","Kolleginnen und Kollegen zu Helix bringen")}</h2>
+  <div class="card"><ol class="steps small">
+   <li>${tr("Register a Helix account at","Helix-Konto registrieren unter")} ${a(L.REG,"webapps.helixops.ai/register")} ${tr("with an SVA business email, using SVA's registration details from Helix Partner Network.","mit geschäftlicher SVA-E-Mail und den SVA-Registrierungsdaten von Helix Partner Network.")}</li>
+   <li>${tr("Complete every required profile field, including phone dial code and language.","Alle Pflichtfelder im Profil ausfüllen, auch Ländervorwahl und Sprache.")}</li>
+   <li>${tr("Activate the account from the verification email.","Konto über die Verifizierungs-E-Mail aktivieren.")}</li>
+   <li>${tr("For Sales Edge and Solution Partner Place access, email","Für Zugang zu Sales Edge und Solution Partner Place an")} <span class="mono">${L.NET}</span>${tr(".", " schreiben.")}</li>
+   <li>${tr("Send the name to Christian; Nikki confirms the Learn@Helix partner subscription and sends the course list.","Namen an Christian senden; Nikki bestätigt die Learn@Helix-Partner-Subskription und sendet die Kursliste.")}</li>
+  </ol></div>
+  <h2>${tr("Contacts","Kontakte")}</h2>
+  <div class="tbl"><table><thead><tr><th>${tr("For","Für")}</th><th>${tr("Contact","Kontakt")}</th><th>E-Mail</th></tr></thead><tbody>
+   <tr><td>${tr("Enablement, learning paths, certification","Enablement, Lernpfade, Zertifizierung")}</td><td>Nikki Sanchez, Partner Success Manager</td><td><span class="mono">${L.NIKKI}</span><button class="copy" data-c="${L.NIKKI}" type="button">${tr("Copy","Kopieren")}</button></td></tr>
+   <tr><td>${tr("Partner Success team","Partner-Success-Team")}</td><td>Helix Partner Success</td><td><span class="mono">${L.TEAM}</span><button class="copy" data-c="${L.TEAM}" type="button">${tr("Copy","Kopieren")}</button></td></tr>
+   <tr><td>${tr("Partnership, opportunities, nominations","Partnerschaft, Opportunities, Nominierungen")}</td><td>Christian Paltinger, Partner Manager</td><td>Microsoft Teams</td></tr>
+   <tr><td>${tr("Sales Edge and Solution Partner Place access","Zugang zu Sales Edge und Solution Partner Place")}</td><td>Helix Partner Network</td><td><span class="mono">${L.NET}</span><button class="copy" data-c="${L.NET}" type="button">${tr("Copy","Kopieren")}</button></td></tr>
+  </tbody></table></div>`;
+}
+
+const VIEWS={overview,team,certs,coverage,paths,commercial,program};
+function render(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(e=>{const k=e.dataset.i;if(T[lang][k])e.textContent=T[lang][k];});
+  document.getElementById("b-en").setAttribute("aria-pressed",lang==="en");document.getElementById("b-de").setAttribute("aria-pressed",lang==="de");
+  const cur=(location.hash||"#overview").slice(1), view=VIEWS[cur]?cur:"overview";
+  document.getElementById("rail").innerHTML=Object.keys(VIEWS).map(k=>`<a href="#${k}" ${k===view?'aria-current="page"':""}>${T[lang].nav[k]}</a>`).join("");
+  Object.keys(VIEWS).forEach(k=>{const s=document.getElementById("v-"+k);s.classList.toggle("on",k===view);if(k===view)s.innerHTML=VIEWS[k]();});
+  if(view==="team"){fillTeam();document.getElementById("q").oninput=fillTeam;document.getElementById("fs").onchange=fillTeam;}
+  document.querySelectorAll(".copy").forEach(b=>b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.c).then(()=>{b.textContent=tr("Copied","Kopiert");}).catch(()=>{});});
+  document.getElementById("foot").innerHTML=`${tr("Prepared by Nikki Sanchez, Partner Success Manager, Helix","Erstellt von Nikki Sanchez, Partner Success Manager, Helix")} · ${T[lang].asOf} ${fd(DATA.asOf)} · ${tr("Course titles change over time; search Learn@Helix by product name if a title differs.","Kurstitel ändern sich; suchen Sie in Learn@Helix nach dem Produktnamen, falls ein Titel abweicht.")}`;
+}
+function setLang(l){lang=l;try{localStorage.setItem("sva-lang",l);}catch(e){}render();}
+document.getElementById("b-en").onclick=()=>setLang("en");document.getElementById("b-de").onclick=()=>setLang("de");
+document.getElementById("bannerBtn").onclick=()=>setLang(lang==="en"?"de":"en");
+document.getElementById("themeBtn").onclick=()=>{const r=document.documentElement,d=r.dataset.theme==="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);r.dataset.theme=d?"light":"dark";};
+window.addEventListener("hashchange",()=>{render();window.scrollTo({top:0});});
+render();
+</script>
+
+</body>
+</html>
