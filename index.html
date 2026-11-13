@@ -38,8 +38,8 @@ header.mast{background:var(--mast);color:var(--mast-fg);position:sticky;top:env(
 .lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
 .theme{background:transparent;border:1px solid #2B3B57;color:var(--mast-muted);border-radius:999px;padding:7px 12px;font:500 12.5px var(--body);cursor:pointer}
 nav.rail{display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
-nav.rail a{color:var(--mast-muted);text-decoration:none;font:500 13.5px var(--body);padding:8px 12px;border-radius:8px;white-space:nowrap}
-nav.rail a[aria-current="page"]{color:#fff;background:#1C2A42;box-shadow:inset 0 -2px 0 var(--accent)}
+nav.rail .tab{background:transparent;border:0;cursor:pointer;color:var(--mast-muted);text-decoration:none;font:500 13.5px var(--body);padding:8px 12px;border-radius:8px;white-space:nowrap}
+nav.rail .tab[aria-current="page"]{color:#fff;background:#1C2A42;box-shadow:inset 0 -2px 0 var(--accent)}
 .de-banner{background:var(--accent-soft);color:var(--ink);font-size:13.5px}
 .de-banner .wrap{display:flex;gap:10px;align-items:center;padding-block:9px;flex-wrap:wrap}
 .de-banner button{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:5px 12px;font:600 12.5px var(--body);cursor:pointer}
@@ -311,12 +311,14 @@ function program(){
 }
 
 const VIEWS={overview,team,certs,coverage,paths,commercial,program};
+let cur=(()=>{try{const h=(location.hash||"").slice(1);return VIEWS[h]?h:"overview";}catch(e){return "overview";}})();
 function render(){
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i]").forEach(e=>{const k=e.dataset.i;if(T[lang][k])e.textContent=T[lang][k];});
   document.getElementById("b-en").setAttribute("aria-pressed",lang==="en");document.getElementById("b-de").setAttribute("aria-pressed",lang==="de");
-  const cur=(location.hash||"#overview").slice(1), view=VIEWS[cur]?cur:"overview";
-  document.getElementById("rail").innerHTML=Object.keys(VIEWS).map(k=>`<a href="#${k}" ${k===view?'aria-current="page"':""}>${T[lang].nav[k]}</a>`).join("");
+  const view=VIEWS[cur]?cur:"overview";
+  document.getElementById("rail").innerHTML=Object.keys(VIEWS).map(k=>`<button type="button" class="tab" data-v="${k}" ${k===view?'aria-current="page"':""}>${T[lang].nav[k]}</button>`).join("");
+  document.querySelectorAll("#rail .tab").forEach(b=>b.onclick=()=>go(b.dataset.v));
   Object.keys(VIEWS).forEach(k=>{const s=document.getElementById("v-"+k);s.classList.toggle("on",k===view);if(k===view)s.innerHTML=VIEWS[k]();});
   if(view==="team"){fillTeam();document.getElementById("q").oninput=fillTeam;document.getElementById("fs").onchange=fillTeam;}
   document.querySelectorAll(".copy").forEach(b=>b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.c).then(()=>{b.textContent=tr("Copied","Kopiert");}).catch(()=>{});});
@@ -326,7 +328,8 @@ function setLang(l){lang=l;try{localStorage.setItem("sva-lang",l);}catch(e){}ren
 document.getElementById("b-en").onclick=()=>setLang("en");document.getElementById("b-de").onclick=()=>setLang("de");
 document.getElementById("bannerBtn").onclick=()=>setLang(lang==="en"?"de":"en");
 document.getElementById("themeBtn").onclick=()=>{const r=document.documentElement,d=r.dataset.theme==="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);r.dataset.theme=d?"light":"dark";};
-window.addEventListener("hashchange",()=>{render();window.scrollTo({top:0});});
+function go(v){cur=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();try{window.scrollTo({top:0});}catch(e){}}
+window.addEventListener("hashchange",()=>{try{const h=location.hash.slice(1);if(VIEWS[h]&&h!==cur){cur=h;render();}}catch(e){}});
 render();
 </script>
 
